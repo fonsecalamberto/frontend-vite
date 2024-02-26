@@ -1,6 +1,6 @@
 import {DataTableDemo} from "@/components/atoms/data-table.tsx";
 import {Payment} from "@/types/types";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
 
 const data: Payment[] = [
@@ -36,9 +36,7 @@ const data: Payment[] = [
     },
 ]
 
-const data2: Payment[] =[
-
-]
+const data2: Payment[] = []
 
 
 function App() {
@@ -46,25 +44,29 @@ function App() {
     const [dataB, setDataB] = useState(data2)
 
 
-    const [toTransferData, setToTransferData] = useState()
+    const [toTransferData, setToTransferData] = useState<{[key: number]: boolean}>()
 
     const transferData = (tempData: any) => {
-        // console.log(toTransferData)
         setToTransferData(tempData)
     }
-    console.log(toTransferData)
+
     const buttonHandler = () => {
-        console.log(toTransferData)
+        if (toTransferData) {
+           const newDataB = dataA.filter((_value, index) => index in toTransferData)
+           const newDataA = dataA.filter((_value, index) => !(index in toTransferData))
+            setDataA(newDataA)
+            setDataB(newDataB)
+        }
     }
 
-  return (
-    <div className={"flex flex-col p-10 items-center container"}>
-      <DataTableDemo data={dataA} setTransferData={transferData}/>
-        <Button onClick={buttonHandler}>Add</Button>
-      <DataTableDemo data={dataB} setTransferData={transferData}/>
+    return (
+        <div className={"flex flex-col p-10 items-center container"}>
+            <DataTableDemo data={dataA} transferData={transferData}/>
+            <Button onClick={buttonHandler}>Add</Button>
+            <DataTableDemo data={dataB} transferData={transferData}/>
 
-    </div>
-  )
+        </div>
+    )
 }
 
 export default App

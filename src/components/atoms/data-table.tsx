@@ -19,8 +19,8 @@ import {
     useReactTable,
 } from "@tanstack/react-table"
 
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import {Button} from "@/components/ui/button"
+import {Checkbox} from "@/components/ui/checkbox"
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -30,7 +30,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+import {Input} from "@/components/ui/input"
 import {
     Table,
     TableBody,
@@ -43,11 +43,10 @@ import {Payment} from "@/types/types";
 import {useEffect} from "react";
 
 
-
 export const columns: ColumnDef<Payment>[] = [
     {
         id: "select",
-        header: ({ table }) => (
+        header: ({table}) => (
             <Checkbox
                 checked={
                     table.getIsAllPageRowsSelected() ||
@@ -57,7 +56,7 @@ export const columns: ColumnDef<Payment>[] = [
                 aria-label="Select all"
             />
         ),
-        cell: ({ row }) => (
+        cell: ({row}) => (
             <Checkbox
                 checked={row.getIsSelected()}
                 onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -70,29 +69,29 @@ export const columns: ColumnDef<Payment>[] = [
     {
         accessorKey: "status",
         header: "Status",
-        cell: ({ row }) => (
+        cell: ({row}) => (
             <div className="capitalize">{row.getValue("status")}</div>
         ),
     },
     {
         accessorKey: "email",
-        header: ({ column }) => {
+        header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Email
-                    <CaretSortIcon className="ml-2 h-4 w-4" />
+                    <CaretSortIcon className="ml-2 h-4 w-4"/>
                 </Button>
             )
         },
-        cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+        cell: ({row}) => <div className="lowercase">{row.getValue("email")}</div>,
     },
     {
         accessorKey: "amount",
         header: () => <div className="text-right">Amount</div>,
-        cell: ({ row }) => {
+        cell: ({row}) => {
             const amount = parseFloat(row.getValue("amount"))
 
             // Format the amount as a dollar amount
@@ -107,7 +106,7 @@ export const columns: ColumnDef<Payment>[] = [
     {
         id: "actions",
         enableHiding: false,
-        cell: ({ row }) => {
+        cell: ({row}) => {
             const payment = row.original
 
             return (
@@ -115,7 +114,7 @@ export const columns: ColumnDef<Payment>[] = [
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-0">
                             <span className="sr-only">Open menu</span>
-                            <DotsHorizontalIcon className="h-4 w-4" />
+                            <DotsHorizontalIcon className="h-4 w-4"/>
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
@@ -125,7 +124,7 @@ export const columns: ColumnDef<Payment>[] = [
                         >
                             Copy payment ID
                         </DropdownMenuItem>
-                        <DropdownMenuSeparator />
+                        <DropdownMenuSeparator/>
                         <DropdownMenuItem>View customer</DropdownMenuItem>
                         <DropdownMenuItem>View payment details</DropdownMenuItem>
                     </DropdownMenuContent>
@@ -135,10 +134,14 @@ export const columns: ColumnDef<Payment>[] = [
     },
 ]
 
+interface Props {
+    data: Payment[];
+    transferData: (tempData: any) => void
+}
 
 
 // @ts-ignore
-export function DataTableDemo({data, setToTransferData} : { data: Payment[]; setTransferData: any}) {
+export function DataTableDemo({data, transferData}: Props) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
@@ -166,10 +169,8 @@ export function DataTableDemo({data, setToTransferData} : { data: Payment[]; set
         },
     })
     useEffect(() => {
-        if(setToTransferData) {
-            setToTransferData(rowSelection)
-        }
-    }, [rowSelection, setToTransferData]);
+        transferData(rowSelection)
+    }, [rowSelection]);
 
     return (
         <div className="w-full">
@@ -185,7 +186,7 @@ export function DataTableDemo({data, setToTransferData} : { data: Payment[]; set
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto">
-                            Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
+                            Columns <ChevronDownIcon className="ml-2 h-4 w-4"/>
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
