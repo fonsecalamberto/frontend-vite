@@ -2,6 +2,7 @@ import {DataTableDemo} from "@/components/atoms/data-table.tsx";
 import {Payment} from "@/types/types";
 import {useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
+import Sidebar from "@/components/atoms/sidebar.tsx";
 
 const data: Payment[] = [
     {
@@ -60,11 +61,13 @@ function App() {
     }
 
     return (
-        <div className={"flex flex-col p-10 items-center container"}>
-            <DataTableDemo data={dataA} transferData={transferData}/>
-            <Button onClick={buttonHandler}>Add</Button>
-            <DataTableDemo data={dataB} transferData={transferData}/>
-
+        <div className="flex max-h-screen bg-gray-100">
+            <Sidebar/>
+                <main className={"flex-1 mx-8 my-6 border px-3 py-2"}>
+                    <DataTableDemo data={dataA} transferData={transferData}/>
+                    <Button onClick={buttonHandler}>Add</Button>
+                    <DataTableDemo data={dataB} transferData={transferData}/>
+                </main>
         </div>
     )
 }

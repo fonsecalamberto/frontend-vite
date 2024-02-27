@@ -139,8 +139,6 @@ interface Props {
     transferData: (tempData: any) => void
 }
 
-
-// @ts-ignore
 export function DataTableDemo({data, transferData}: Props) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
